@@ -1,0 +1,13 @@
+.CardList_container {
+    margin: 0;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.unstyled-list {
+    list-style: none;
+    display: inherit;
+    justify-content: inherit;
+    flex-wrap: inherit;
+}
