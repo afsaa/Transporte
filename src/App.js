@@ -1,5 +1,5 @@
 import React from 'react';
-import PassengerCard from './components/PassengerCard'
+import PassengerCard from './components/PassengerCard';
 import './App.css';
 
 function App() {
