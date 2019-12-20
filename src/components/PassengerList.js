@@ -7,9 +7,9 @@ class PassengerList extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            loading: false,
+            loading: true,
             error: null,
-            passengers: []
+            passengers: undefined
         }
     }
     
@@ -18,7 +18,7 @@ class PassengerList extends React.Component {
     }
 
     fetchData = async () => {
-        this.setState({ loading: false });
+        this.setState({ loading: true });
         try {
             const res = await fetch('http://localhost:8080/api/pasajeros');
             const data = await res.json();
@@ -33,10 +33,10 @@ class PassengerList extends React.Component {
 
     render() {
         if (this.state.loading) {
-            return <h1>Loading ...</h1> 
+            return <h1>Loading ...</h1>;
         }
         if (this.state.error) {
-            return <h1>Shit happends!</h1> 
+            return <h1>Shit happends!</h1>;
         }
         return (
             <div className="CardList_container">
