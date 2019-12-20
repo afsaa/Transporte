@@ -1,5 +1,4 @@
 import React from 'react';
-import PassengerCard from './components/PassengerCard';
 import PassengerList from './components/PassengerList';
 import './App.css';
 

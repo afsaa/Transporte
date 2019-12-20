@@ -20,19 +20,24 @@ class PassengerList extends React.Component {
     fetchData = async () => {
         this.setState({ loading: false });
         try {
-            fetch('http://localhost:8080/api/pasajeros')
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
-                    this.setState({ loading: false, passengers: data })
-                });
+            const res = await fetch('http://localhost:8080/api/pasajeros');
+            const data = await res.json();
+            if (!res.ok) {
+                throw Error(res.statusText); 
+            }
+            this.setState({ loading: false, passengers: data })
         } catch (error) {
             this.setState({ loading:false, error: error })
         }
     }
 
     render() {
+        if (this.state.loading) {
+            return <h1>Loading ...</h1> 
+        }
+        if (this.state.error) {
+            return <h1>Shit happends!</h1> 
+        }
         return (
             <div className="CardList_container">
                 <ul className="unstyled-list">
