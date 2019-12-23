@@ -18,7 +18,6 @@ class PassengerList extends React.Component {
   }
 
   fetchData = async () => {
-    this.setState({ loading: true });
     try {
       const res = await fetch("http://localhost:8080/api/pasajeros");
       const data = await res.json();
