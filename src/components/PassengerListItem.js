@@ -1,5 +1,4 @@
 import React from "react";
-import PageLoading from "./PageLoading";
 import PassengerCard from "./PassengerCard";
 
 class PassengerListItem extends React.Component {

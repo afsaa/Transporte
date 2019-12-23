@@ -37,15 +37,7 @@ class PassengerList extends React.Component {
     if (this.state.error) {
       return <h1>Shit happends!</h1>;
     }
-    return (
-      <div className="CardList_container">
-        <ul className="unstyled-list">
-          {this.state.passengers.map(passenger => {
-            return <PassengerListItem passenger={passenger} />;
-          })}
-        </ul>
-      </div>
-    );
+    return <PassengersList passengers={this.state.passengers} />;
   }
 }
 
@@ -55,11 +47,41 @@ function useSearchPassengers(passengers) {
 
   useMemo(() => {
     const result = passengers.filter(passenger => {
-      return `${passenger.name}`.toLowerCase().includes(query.toLowerCase());
+      return `${passenger.nombre}`.toLowerCase().includes(query.toLowerCase());
     });
+    setFilteredPassengers(result);
   }, [passengers, query]);
 
   return { query, setQuery, filteredPassengers };
+}
+
+function PassengersList(props) {
+  const passengers = props.passengers;
+  const { query, setQuery, filteredPassengers } = useSearchPassengers(
+    passengers
+  );
+  return (
+    <div>
+      <div className="form-group">
+        <label>Filter Passengers </label>
+        <input
+          type="text"
+          className="form-control"
+          value={query}
+          onChange={e => {
+            setQuery(e.target.value);
+          }}
+        />
+      </div>
+      <div className="CardList_container">
+        <ul className="unstyled-list">
+          {filteredPassengers.map(passenger => {
+            return <PassengerListItem passenger={passenger} />;
+          })}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export default PassengerList;
