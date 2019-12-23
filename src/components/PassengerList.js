@@ -1,5 +1,5 @@
-import React from "react";
-import PassengerCard from "./PassengerCard";
+import React, { useState, useMemo } from "react";
+import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
 import "./styles/cardList.css";
 
@@ -41,20 +41,25 @@ class PassengerList extends React.Component {
       <div className="CardList_container">
         <ul className="unstyled-list">
           {this.state.passengers.map(passenger => {
-            return (
-              <li key={passenger.id}>
-                <PassengerCard
-                  fullName={passenger.nombre}
-                  address={passenger.direccion_residencia}
-                  birthday={passenger.fecha_nacimiento}
-                />
-              </li>
-            );
+            return <PassengerListItem passenger={passenger} />;
           })}
         </ul>
       </div>
     );
   }
+}
+
+function useSearchPassengers(passengers) {
+  const [query, setQuery] = useState("");
+  const [filteredPassengers, setFilteredPassengers] = useState(passengers);
+
+  useMemo(() => {
+    const result = passengers.filter(passenger => {
+      return `${passenger.name}`.toLowerCase().includes(query.toLowerCase());
+    });
+  }, [passengers, query]);
+
+  return { query, setQuery, filteredPassengers };
 }
 
 export default PassengerList;
