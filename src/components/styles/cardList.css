@@ -1,13 +1,34 @@
 .CardList_container {
-    margin: 0;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
+  margin: 0;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .unstyled-list {
-    list-style: none;
-    display: inherit;
-    justify-content: inherit;
-    flex-wrap: inherit;
+  list-style: none;
+  display: inherit;
+  justify-content: inherit;
+  flex-wrap: inherit;
+  padding: 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group label {
+  margin: 10px 0 10px 0;
+  font-size: large;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 50%;
+  height: 25px;
+  border-radius: 5px;
+  font-size: 20px;
 }

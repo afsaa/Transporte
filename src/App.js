@@ -1,12 +1,17 @@
-import React from 'react';
-import PassengerList from './components/PassengerList';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Home from "./components/Pages/Home";
+import PassengerList from "./components/PassengerList";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <PassengerList />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/passengers" component={PassengerList} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
