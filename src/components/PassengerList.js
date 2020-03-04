@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useContext, useMemo } from "react";
+import { GlobalContext } from "../context/GlobalState";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
 import "./styles/cardList.css";
@@ -56,10 +57,12 @@ function useSearchPassengers(passengers) {
 }
 
 function PassengersList(props) {
+  const context = useContext(GlobalContext);
   const passengers = props.passengers;
   const { query, setQuery, filteredPassengers } = useSearchPassengers(
     passengers
   );
+  console.log(context);
   return (
     <div>
       <div className="form-group">
@@ -75,8 +78,8 @@ function PassengersList(props) {
       </div>
       <div className="CardList_container">
         <ul className="unstyled-list">
-          {filteredPassengers.map(passenger => {
-            return <PassengerListItem passenger={passenger} />;
+          {filteredPassengers.map((passenger, i) => {
+            return <PassengerListItem key={i} passenger={passenger} />;
           })}
         </ul>
       </div>
