@@ -60,7 +60,18 @@ app.post("/api/pasajeros", (req, res) => {
 
 app.put("/api/pasajeros/:id", (req, res) => {
   // Update passenger
-  res.json(req.body);
+  const { name, address, birthday } = req.body;
+  db.any(
+    `UPDATE pasajero SET nombre=${name} direccion_residencia=${address} fecha_nacimiento=${birthday} WHERE id=${req.params.id}`,
+    [true]
+  )
+    .then(data => {
+      res.status(200).json({ success: "Passenger updated successfully!" });
+    })
+    .catch(error => {
+      res.status(400).json({ error: "We couldnt find that passenger" });
+      console.log(error);
+    });
 });
 
 app.delete("/api/pasajeros/:id", (req, res) => {
