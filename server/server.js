@@ -48,6 +48,22 @@ app.get("/api/pasajeros", (req, res) => {
       res.json(data);
     })
     .catch(error => {
+      res.json("Something went wrong, please try again.");
       console.log("Error: ", error);
     });
+});
+
+app.post("/api/pasajeros", (req, res) => {
+  // Add a new passenger
+  res.json(req.body);
+});
+
+app.put("/api/pasajeros/:id", (req, res) => {
+  // Update passenger
+  res.json(req.body);
+});
+
+app.delete("/api/pasajeros/:id", (req, res) => {
+  // Delete a passenger
+  res.json({ deleted: id });
 });
