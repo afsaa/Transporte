@@ -36,6 +36,8 @@ monitor.setTheme("matrix");
 const pgp = require("pg-promise")(initOptions);
 const db = pgp(dbConfig);
 
+const passengers = [];
+
 // Starting the server
 app.listen(port, () => {
   console.log("Listening on port 8080...");
@@ -62,7 +64,7 @@ app.put("/api/pasajeros/:id", (req, res) => {
   // Update passenger
   const { name, address, birthday } = req.body;
   db.any(
-    `UPDATE pasajero SET nombre=${name} direccion_residencia=${address} fecha_nacimiento=${birthday} WHERE id=${req.params.id}`,
+    `UPDATE pasajero SET nombre='${name}', direccion_residencia='${address}', fecha_nacimiento='${birthday}' WHERE id=${req.params.id}`,
     [true]
   )
     .then(data => {
