@@ -39,8 +39,6 @@ monitor.setTheme("matrix");
 const pgp = require("pg-promise")(initOptions);
 const db = pgp(dbConfig);
 
-const passengers = [];
-
 // Starting the server
 app.listen(port, () => {
   console.log("Listening on port 8080...");
@@ -49,10 +47,10 @@ app.listen(port, () => {
 // Creating API endpoints
 
 // Get 10 passengers
-app.get("/api/pasajeros", (req, res) => {
+app.get("/api/pasajeros", authenticateToken, (req, res) => {
   db.any("SELECT * FROM info_pasajero_view LIMIT 10", [true])
-    .then(data => {
-      res.json(data);
+    .then(passengers => {
+      res.json(passengers.filter(passenger => passenger.nombre === req.userCredentials.username));
     })
     .catch(error => {
       res.json("Something went wrong, please try again.");
@@ -88,11 +86,9 @@ app.put("/api/pasajeros/:id", (req, res) => {
     [true]
   )
     .then(() => {
-      res
-        .sendStatus(200)
-        .json({
-          success: `Passenger with id ${req.params.id} updated successfully!`
-        });
+      res.sendStatus(200).json({
+        success: `Passenger with id ${req.params.id} updated successfully!`
+      });
     })
     .catch(error => {
       res.sendStatus(400).json({ error: "We couldn't find that passenger" });
@@ -104,11 +100,9 @@ app.put("/api/pasajeros/:id", (req, res) => {
 app.delete("/api/pasajeros/:id", (req, res) => {
   db.any(`DELETE from pasajero WHERE id=${req.params.id}`, [true])
     .then(() => {
-      res
-        .sendStatus(200)
-        .json({
-          success: `Passenger with id ${req.params.id} deleted successfully!`
-        });
+      res.sendStatus(200).json({
+        success: `Passenger with id ${req.params.id} deleted successfully!`
+      });
     })
     .catch(error => {
       res.sendStatus(400).json({ error: "We couldn't find that passenger" });
@@ -126,3 +120,19 @@ app.post("/authentication", (req, res) => {
   );
   res.json({ token: accessToken });
 });
+
+// Middleware to verify token
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) {
+    return res.sendStatus(401);
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user;
+    next();
+  });
+}
