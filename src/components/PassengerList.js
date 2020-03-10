@@ -15,12 +15,17 @@ class PassengerList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    //this.fetchData();
+    this.getToken();
   }
 
   fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/pasajeros");
+      const res = await fetch("http://localhost:8080/api/pasajeros", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("JWT")}`
+        }
+      });
       const data = await res.json();
       if (!res.ok) {
         throw Error(res.statusText);
@@ -30,6 +35,29 @@ class PassengerList extends React.Component {
       this.setState({ loading: false, error: error });
     }
   };
+
+  getToken = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/authentication", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: "Kobe",
+          password: "andressaa94"
+        })
+      });
+      const { token } = await res.json();
+      localStorage.setItem("JWT", token);
+      this.fetchData();
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+    } catch (error) {
+      this.setState({ loading: false, error: error });
+    }
+  }
 
   render() {
     if (this.state.loading) {
