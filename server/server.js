@@ -44,6 +44,8 @@ app.listen(port, () => {
 });
 
 // Creating API endpoints
+
+// Get 10 passengers
 app.get("/api/pasajeros", (req, res) => {
   db.any("SELECT * FROM info_pasajero_view LIMIT 10", [true])
     .then(data => {
@@ -55,28 +57,43 @@ app.get("/api/pasajeros", (req, res) => {
     });
 });
 
+// Add a new passenger
 app.post("/api/pasajeros", (req, res) => {
-  // Add a new passenger
+  const { name, address, birthday } = req.body;
+
+  db.any(
+    `INSERT INTO pasajero 
+	VALUES('${name}', '${address}', '${birthday}')`,
+    [true]
+  )
+    .then(data => {
+      //res.json(data);
+      res.sendStatus(200).json({ success: "Passenger created successfully!" });
+    })
+    .catch(error => {
+      res.json("Something went wrong, please try again.");
+      console.log("Error: ", error);
+    });
   res.json(req.body);
 });
 
+// Update passenger
 app.put("/api/pasajeros/:id", (req, res) => {
-  // Update passenger
   const { name, address, birthday } = req.body;
   db.any(
     `UPDATE pasajero SET nombre='${name}', direccion_residencia='${address}', fecha_nacimiento='${birthday}' WHERE id=${req.params.id}`,
     [true]
   )
     .then(data => {
-      res.status(200).json({ success: "Passenger updated successfully!" });
+      res.sendStatus(200).json({ success: "Passenger updated successfully!" });
     })
     .catch(error => {
-      res.status(400).json({ error: "We couldnt find that passenger" });
+      res.sendStatus(400).json({ error: "We couldnt find that passenger" });
       console.log(error);
     });
 });
 
+// Delete a passenger
 app.delete("/api/pasajeros/:id", (req, res) => {
-  // Delete a passenger
   res.json({ deleted: id });
 });
