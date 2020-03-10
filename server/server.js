@@ -66,7 +66,7 @@ app.post("/api/pasajeros", (req, res) => {
 	VALUES('${name}', '${address}', '${birthday}')`,
     [true]
   )
-    .then(data => {
+    .then(() => {
       //res.json(data);
       res.sendStatus(200).json({ success: "Passenger created successfully!" });
     })
@@ -84,16 +84,26 @@ app.put("/api/pasajeros/:id", (req, res) => {
     `UPDATE pasajero SET nombre='${name}', direccion_residencia='${address}', fecha_nacimiento='${birthday}' WHERE id=${req.params.id}`,
     [true]
   )
-    .then(data => {
-      res.sendStatus(200).json({ success: "Passenger updated successfully!" });
+    .then(() => {
+      res.sendStatus(200).json({ success: `Passenger with id ${req.params.id} updated successfully!` });
     })
     .catch(error => {
-      res.sendStatus(400).json({ error: "We couldnt find that passenger" });
+      res.sendStatus(400).json({ error: "We couldn't find that passenger" });
       console.log(error);
     });
 });
 
 // Delete a passenger
 app.delete("/api/pasajeros/:id", (req, res) => {
-  res.json({ deleted: id });
+  db.any(
+    `DELETE from pasajero WHERE id=${req.params.id}`,
+    [true]
+  )
+    .then(() => {
+      res.sendStatus(200).json({ success: `Passenger with id ${req.params.id} deleted successfully!` });
+    })
+    .catch(error => {
+      res.sendStatus(400).json({ error: "We couldn't find that passenger" });
+      console.log(error);
+    });
 });
