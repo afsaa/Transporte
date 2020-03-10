@@ -1,9 +1,12 @@
+require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 8080;
 const monitor = require("pg-monitor");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -85,7 +88,11 @@ app.put("/api/pasajeros/:id", (req, res) => {
     [true]
   )
     .then(() => {
-      res.sendStatus(200).json({ success: `Passenger with id ${req.params.id} updated successfully!` });
+      res
+        .sendStatus(200)
+        .json({
+          success: `Passenger with id ${req.params.id} updated successfully!`
+        });
     })
     .catch(error => {
       res.sendStatus(400).json({ error: "We couldn't find that passenger" });
@@ -95,15 +102,27 @@ app.put("/api/pasajeros/:id", (req, res) => {
 
 // Delete a passenger
 app.delete("/api/pasajeros/:id", (req, res) => {
-  db.any(
-    `DELETE from pasajero WHERE id=${req.params.id}`,
-    [true]
-  )
+  db.any(`DELETE from pasajero WHERE id=${req.params.id}`, [true])
     .then(() => {
-      res.sendStatus(200).json({ success: `Passenger with id ${req.params.id} deleted successfully!` });
+      res
+        .sendStatus(200)
+        .json({
+          success: `Passenger with id ${req.params.id} deleted successfully!`
+        });
     })
     .catch(error => {
       res.sendStatus(400).json({ error: "We couldn't find that passenger" });
       console.log(error);
     });
+});
+
+//Authenticate user
+app.post("/authentication", (req, res) => {
+  const { username, password } = req.body;
+  const userCredentials = { username, password };
+  const accessToken = jwt.sign(
+    userCredentials,
+    process.env.ACCESS_TOKEN_SECRET
+  );
+  res.json({ token: accessToken });
 });
