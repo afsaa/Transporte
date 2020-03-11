@@ -50,7 +50,11 @@ app.listen(port, () => {
 app.get("/api/pasajeros", authenticateToken, (req, res) => {
   db.any("SELECT * FROM info_pasajero_view LIMIT 10", [true])
     .then(passengers => {
-      res.json(passengers.filter(passenger => passenger.nombre === req.userCredentials.username));
+      res.json(
+        passengers.filter(
+          passenger => passenger.nombre === req.userCredentials.username
+        )
+      );
     })
     .catch(error => {
       res.sendStatus(500).json({ error: "Internal server error" });
@@ -59,7 +63,7 @@ app.get("/api/pasajeros", authenticateToken, (req, res) => {
 });
 
 // Add a new passenger
-app.post("/api/pasajeros", authenticateToken,(req, res) => {
+app.post("/api/pasajeros", authenticateToken, (req, res) => {
   const { name, address, birthday } = req.body;
 
   db.any(
@@ -79,7 +83,7 @@ app.post("/api/pasajeros", authenticateToken,(req, res) => {
 });
 
 // Update passenger
-app.put("/api/pasajeros/:id", authenticateToken,(req, res) => {
+app.put("/api/pasajeros/:id", authenticateToken, (req, res) => {
   const { name, address, birthday } = req.body;
   db.any(
     `UPDATE pasajero SET nombre='${name}', direccion_residencia='${address}', fecha_nacimiento='${birthday}' WHERE id=${req.params.id}`,
@@ -97,7 +101,7 @@ app.put("/api/pasajeros/:id", authenticateToken,(req, res) => {
 });
 
 // Delete a passenger
-app.delete("/api/pasajeros/:id", authenticateToken,(req, res) => {
+app.delete("/api/pasajeros/:id", authenticateToken, (req, res) => {
   db.any(`DELETE from pasajero WHERE id=${req.params.id}`, [true])
     .then(() => {
       res.sendStatus(200).json({
