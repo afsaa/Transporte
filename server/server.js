@@ -46,10 +46,18 @@ app.listen(port, () => {
 
 // Creating API endpoints
 
+// Passengers endpoints
 // Get 10 passengers
 app.get("/api/pasajeros", authenticateToken, (req, res) => {
+  const { name, address } = req.query;
   db.any("SELECT * FROM info_pasajero_view LIMIT 10", [true])
     .then(passengers => {
+      if (name) {
+        passengers = passengers.filter(p => p.nombre === name);
+      }
+      if (address) {
+        passengers = passengers.filter(p => p.direccion_residencia === address);
+      }
       res.json(
         //passengers.filter(passenger => passenger.nombre === req.user.username)
         passengers
