@@ -22,8 +22,9 @@ class PassengerList extends React.Component {
   fetchData = async () => {
     try {
       const res = await fetch("http://localhost:8080/api/pasajeros", {
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem("JWT")}`
+          Authorization: `Bearer ${localStorage.getItem("JWT")}`
         }
       });
       const data = await res.json();
@@ -39,9 +40,9 @@ class PassengerList extends React.Component {
   getToken = async () => {
     try {
       const res = await fetch("http://localhost:8080/authentication", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           username: "Kobe",
@@ -57,7 +58,7 @@ class PassengerList extends React.Component {
     } catch (error) {
       this.setState({ loading: false, error: error });
     }
-  }
+  };
 
   render() {
     if (this.state.loading) {

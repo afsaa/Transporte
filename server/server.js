@@ -51,9 +51,8 @@ app.get("/api/pasajeros", authenticateToken, (req, res) => {
   db.any("SELECT * FROM info_pasajero_view LIMIT 10", [true])
     .then(passengers => {
       res.json(
-        passengers.filter(
-          passenger => passenger.nombre === req.userCredentials.username
-        )
+        //passengers.filter(passenger => passenger.nombre === req.user.username)
+        passengers
       );
     })
     .catch(error => {
