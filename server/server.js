@@ -7,7 +7,10 @@ const port = 8080;
 const monitor = require("pg-monitor");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const apicache = require("apicache");
+let cache = apicache.middleware;
 
+app.use(cache("5 minutes"));
 app.use(cors());
 app.use(bodyParser.json());
 
