@@ -9,6 +9,8 @@ const {
 router
   .route("/")
   .get(getPassengers)
-  .delete(deletePassenger);
+  .post(addPassenger);
+
+router.route("/:id").delete(deletePassenger);
 
 module.exports = router;

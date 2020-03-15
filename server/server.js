@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 8080;
-const monitor = require("pg-monitor");
+const db = require("./config/db");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const apicache = require("apicache");
@@ -15,34 +15,6 @@ app.use("/api/v1/pasajeros", passengersRoutes);
 //app.use(cache("5 minutes"));
 app.use(cors());
 app.use(bodyParser.json());
-
-const dbConfig = {
-  host: "localhost",
-  port: 5432,
-  database: "transporte",
-  user: "postgres",
-  password: "andressaa94"
-};
-
-const initOptions = {
-  // global event notification;
-  error(error, e) {
-    if (e.cn) {
-      // A connection-related error;
-      //
-      // Connections are reported back with the password hashed,
-      // for safe errors logging, without exposing passwords.
-      console.log("CN:", e.cn);
-      console.log("EVENT:", error.message || error);
-    }
-  }
-};
-
-monitor.attach(initOptions);
-monitor.setTheme("matrix");
-
-const pgp = require("pg-promise")(initOptions);
-const db = pgp(dbConfig);
 
 // Starting the server
 app.listen(port, () => {
