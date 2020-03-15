@@ -3,14 +3,16 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const monitor = require("pg-monitor");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const apicache = require("apicache");
+const passengersRoutes = require("./routes/passengers");
 let cache = apicache.middleware;
 
-app.use(cache("5 minutes"));
+app.use("/api/v1/pasajeros", passengersRoutes);
+//app.use(cache("5 minutes"));
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -50,6 +52,7 @@ app.listen(port, () => {
 // Creating API endpoints
 
 // Passengers endpoints
+
 // Get 10 passengers
 app.get("/api/pasajeros", authenticateToken, (req, res) => {
   const { name, address } = req.query;
