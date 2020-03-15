@@ -38,11 +38,13 @@ app.get("/api/pasajeros", authenticateToken, (req, res) => {
       }
       res.json(
         //passengers.filter(passenger => passenger.nombre === req.user.username)
-        passengers
+        { success: true, data: passengers }
       );
     })
     .catch(error => {
-      res.sendStatus(500).json({ error: "Internal server error" });
+      res
+        .sendStatus(500)
+        .json({ success: false, error: "Internal server error" });
       console.log("Error: ", error);
     });
 });
