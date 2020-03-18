@@ -46,7 +46,19 @@ exports.addPassenger = (req, res, next) => {
 // @route   DELETE /api/v1/pasajeros/:id
 // @access  Public
 exports.deletePassenger = (req, res, next) => {
-  res.send("DELETE passenger");
+  db.any(`DELETE from pasajero WHERE id=${req.params.id}`, [true])
+    .then(() => {
+      return res.status(200).json({
+        success: true,
+        message: `Passenger with id ${req.params.id} deleted successfully!`
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      return res
+        .status(404)
+        .json({ success: false, error: "We couldn't find that passenger" });
+    });
 };
 
 // @desc    Update passenger
