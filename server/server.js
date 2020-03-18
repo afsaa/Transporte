@@ -2,20 +2,19 @@ require("dotenv").config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
-const port = process.env.PORT || 8080;
+const passengersRoutes = require("./routes/passengers");
 const db = require("./config/db");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const apicache = require("apicache");
-const passengersRoutes = require("./routes/passengers");
 let cache = apicache.middleware;
 
-app.use("/api/v1/pasajeros", passengersRoutes);
 //app.use(cache("5 minutes"));
-app.use(cors());
+const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
+const port = process.env.PORT || 8080;
 // Starting the server
 app.listen(port, () => {
   console.log("Listening on port 8080...");
@@ -24,6 +23,7 @@ app.listen(port, () => {
 // Creating API endpoints
 
 // Passengers endpoints
+app.use("/api/v1/pasajeros", passengersRoutes);
 
 // Get 10 passengers
 app.get("/api/pasajeros", authenticateToken, (req, res) => {

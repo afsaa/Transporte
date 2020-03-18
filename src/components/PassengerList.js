@@ -85,11 +85,12 @@ function useSearchPassengers(passengers) {
   return { query, setQuery, filteredPassengers };
 }
 
-function PassengersList(props) {
+function PassengersList({ passengers }) {
   const context = useContext(GlobalContext);
-  const passengers = props.passengers;
+  //const passengers = props.passengers;
+  console.log(passengers);
   const { query, setQuery, filteredPassengers } = useSearchPassengers(
-    passengers
+    passengers.data
   );
   console.log(context);
   return (

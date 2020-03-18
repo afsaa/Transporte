@@ -12,14 +12,14 @@ exports.getPassengers = (req, res, next) => {
       if (address) {
         passengers = passengers.filter(p => p.direccion_residencia === address);
       }
-      res.status(200).json(
+      return res.status(200).json(
         //passengers.filter(passenger => passenger.nombre === req.user.username)
         { success: true, count: passengers.length, data: passengers }
       );
     })
     .catch(error => {
-      res.sendStatus(500).json({ success: false, error: "Server error" });
       console.log("Error: ", error);
+      return res.status(500).json({ success: false, error: "Server error" });
     });
 };
 
@@ -27,7 +27,19 @@ exports.getPassengers = (req, res, next) => {
 // @route   POST /api/v1/pasajeros
 // @access  Public
 exports.addPassenger = (req, res, next) => {
-  res.send("POST passenger");
+  const { name, address, birthday } = req.body;
+  db.any(
+    `INSERT INTO pasajero (nombre, direccion_residencia, fecha_nacimiento)
+	VALUES('${name}', '${address}', '${birthday}')`,
+    [true]
+  )
+    .then(() => {
+      return res.status(201).json({ success: true, data: req.body });
+    })
+    .catch(error => {
+      console.log("Error: ", error);
+      return res.status(500).json({ success: false, error: "Server error" });
+    });
 };
 
 // @desc    Delete passenger
