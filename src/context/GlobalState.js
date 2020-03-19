@@ -19,7 +19,7 @@ export const GlobalProvider = ({ children }) => {
   // Actions
   async function getPassengers() {
     try {
-      const res = await axios.get("/api/v1/passengers");
+      const res = await axios.get("/api/v1/pasajeros");
       dispatch({
         type: "GET_PASSENGERS",
         payload: res.data.data

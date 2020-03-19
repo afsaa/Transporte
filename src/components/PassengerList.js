@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
@@ -15,8 +15,8 @@ class PassengerList extends React.Component {
   }
 
   componentDidMount() {
-    //this.fetchData();
-    this.getToken();
+    // this.fetchData();
+    // this.getToken();
   }
 
   fetchData = async () => {
@@ -61,12 +61,6 @@ class PassengerList extends React.Component {
   };
 
   render() {
-    if (this.state.loading) {
-      return <PageLoading />;
-    }
-    if (this.state.error) {
-      return <h1>Shit happends!</h1>;
-    }
     return <PassengersList passengers={this.state.passengers} />;
   }
 }
@@ -85,14 +79,25 @@ function useSearchPassengers(passengers) {
   return { query, setQuery, filteredPassengers };
 }
 
-function PassengersList({ passengers }) {
-  const context = useContext(GlobalContext);
-  //const passengers = props.passengers;
-  console.log(passengers);
-  const { query, setQuery, filteredPassengers } = useSearchPassengers(
-    passengers.data
+function PassengersList(props) {
+  const { loading, error, passengers, getPassengers } = useContext(
+    GlobalContext
   );
-  console.log(context);
+  useEffect(() => {
+    getPassengers();
+  }, []);
+  //const passengers = props.passengers;
+  // console.log(passengers);
+  const { query, setQuery, filteredPassengers } = useSearchPassengers(
+    passengers
+  );
+  // console.log(context);
+  if (loading) {
+    return <PageLoading />;
+  }
+  if (error) {
+    return <h1>Shit happends!</h1>;
+  }
   return (
     <div>
       <div className="form-group">
