@@ -2,6 +2,7 @@ import React, { useState, useContext, useMemo, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
+import axios from "axios";
 import "./styles/cardList.css";
 
 class PassengerList extends React.Component {
@@ -18,47 +19,6 @@ class PassengerList extends React.Component {
     // this.fetchData();
     // this.getToken();
   }
-
-  fetchData = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/api/pasajeros", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT")}`
-        }
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-      this.setState({ loading: false, passengers: data });
-    } catch (error) {
-      this.setState({ loading: false, error: error });
-    }
-  };
-
-  getToken = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/authentication", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: "Kobe",
-          password: "andressaa94"
-        })
-      });
-      const { token } = await res.json();
-      localStorage.setItem("JWT", token);
-      this.fetchData();
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-    } catch (error) {
-      this.setState({ loading: false, error: error });
-    }
-  };
 
   render() {
     return <PassengersList passengers={this.state.passengers} />;
@@ -79,12 +39,37 @@ function useSearchPassengers(passengers) {
   return { query, setQuery, filteredPassengers };
 }
 
+async function getToken(username, password) {
+  try {
+    const res = await axios.post("http://localhost:8080/authentication", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+    localStorage.setItem("JWT", res.data.token);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function PassengersList(props) {
   const { loading, error, passengers, getPassengers } = useContext(
     GlobalContext
   );
+
   useEffect(() => {
-    getPassengers();
+    const storedJWT = localStorage.getItem("JWT");
+    if (storedJWT) {
+      getPassengers(storedJWT);
+    } else {
+      getToken("Kobe", "admin123");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //const passengers = props.passengers;
   // console.log(passengers);

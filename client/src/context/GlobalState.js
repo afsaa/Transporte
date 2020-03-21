@@ -17,9 +17,13 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   // Actions
-  async function getPassengers() {
+  async function getPassengers(JWT) {
     try {
-      const res = await axios.get("/api/v1/pasajeros");
+      const res = await axios.get("/api/v1/pasajeros", {
+        headers: {
+          Authorization: `Bearer ${JWT}`
+        }
+      });
       dispatch({
         type: "GET_PASSENGERS",
         payload: res.data.data
