@@ -1,0 +1,80 @@
+body {
+  background-color: #89b140;
+  color: #a8c466;
+  padding: 30px 10% 0 10%;
+}
+
+.hero {
+  margin: 10px;
+  padding: 5%;
+  background-color: #eff5f7;
+  border-radius: 5px;
+}
+
+.hero-heading {
+  font-weight: bold;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+.menu-logo {
+  width: 100%;
+  height: auto;
+}
+
+.menu-nav {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 0 15px 0 15px;
+}
+
+.nav-link {
+  color: #eff5f7;
+}
+
+.nav-link:hover {
+  color: #a8c466;
+}
+
+.take-action-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.take-action-heading {
+  color: #eff5f7;
+  font-weight: bold;
+}
+
+.take-action-btn {
+  margin: 10px;
+  background-color: #eff5f7;
+  color: #89b140;
+  border-radius: 10px;
+  display: inline-block;
+  cursor: pointer;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #0000008a;
+  transition: background-color, color 0.5s ease-out;
+}
+.take-action-btn:hover {
+  color: #eff5f7;
+  background-color: #89b140;
+  transition: background-color, color 0.5s ease-in;
+}
+.take-action-btn:active {
+  position: relative;
+  top: 1px;
+}

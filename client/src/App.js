@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./components/Pages/Home";
 import PassengerList from "./components/PassengerList";
 import { GlobalProvider } from "./context/GlobalState";
-import "./App.css";
+import "./components/styles/App.css";
 
 function App() {
   return (
