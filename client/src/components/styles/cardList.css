@@ -20,8 +20,13 @@
   align-items: center;
 }
 
-.form-group label {
+.form-group {
   margin: 10px 0 10px 0;
+}
+
+.form-label {
+  margin: 10px 0 10px 0;
+  color: #eff5f7;
   font-size: large;
   font-weight: bold;
 }

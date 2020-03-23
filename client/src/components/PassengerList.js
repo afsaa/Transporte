@@ -86,7 +86,7 @@ function PassengersList(props) {
   return (
     <div>
       <div className="form-group">
-        <label>Filter Passengers </label>
+        <label className="form-label">Check if you are in </label>
         <input
           type="text"
           className="form-control"
