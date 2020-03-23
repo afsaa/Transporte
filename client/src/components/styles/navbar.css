@@ -1,0 +1,32 @@
+.menu {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+.menu-logo {
+  width: 100%;
+  height: auto;
+}
+
+.menu-nav {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 0 15px 0 15px;
+}
+
+.nav-link {
+  color: #eff5f7;
+  font-weight: bold;
+  transition: color 0.5s ease-out;
+}
+
+.nav-link:hover {
+  color: #a8c466;
+  transition: color 0.5s ease-in;
+}

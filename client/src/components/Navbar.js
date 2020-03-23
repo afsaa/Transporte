@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import logo from "../img/logo.png";
+import "./styles/navbar.css";
 
 export default class Navbar extends Component {
   render() {
