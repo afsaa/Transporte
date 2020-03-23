@@ -39,10 +39,13 @@ body {
 
 .nav-link {
   color: #eff5f7;
+  font-weight: bold;
+  transition: color 0.5s ease-out;
 }
 
 .nav-link:hover {
   color: #a8c466;
+  transition: color 0.5s ease-in;
 }
 
 .take-action-container {
