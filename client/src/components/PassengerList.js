@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
+import Navbar from "./Navbar";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
 import axios from "axios";
@@ -84,7 +85,8 @@ function PassengersList(props) {
     return <h1>Shit happends!</h1>;
   }
   return (
-    <div>
+    <React.Fragment>
+      <Navbar />
       <div className="form-group">
         <label className="form-label">Check if you are in </label>
         <input
@@ -103,7 +105,7 @@ function PassengersList(props) {
           })}
         </ul>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
 
