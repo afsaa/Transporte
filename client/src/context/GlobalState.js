@@ -6,7 +6,8 @@ import axios from "axios";
 const initialState = {
   passengers: [],
   loading: true,
-  error: null
+  error: null,
+  JWT: null
 };
 
 // Create context
@@ -17,6 +18,31 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   // Actions
+  async function getToken(username, password) {
+    try {
+      const res = await axios.post("http://localhost:8080/authentication", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      dispatch({
+        type: "GET_TOKEN",
+        payload: res.data.token
+      });
+    } catch (error) {
+      console.log(error.message);
+      dispatch({
+        type: "PASSENGER_ERROR",
+        payload: error.message
+      });
+    }
+  }
+
   async function getPassengers(JWT) {
     try {
       const res = await axios.get("/api/v1/pasajeros", {
@@ -31,7 +57,27 @@ export const GlobalProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: "PASSENGER_ERROR",
-        payload: error.error
+        payload: error.message
+      });
+    }
+  }
+
+  async function addPassenger(JWT, newPassenger) {
+    try {
+      const res = await axios.post("/api/v1/pasajeros", newPassenger, {
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+          "Content-Type": "application/json"
+        }
+      });
+      dispatch({
+        type: "ADD_PASSENGER",
+        payload: res.data.data.body
+      });
+    } catch (error) {
+      dispatch({
+        type: "PASSENGER_ERROR",
+        payload: error.message
       });
     }
   }
@@ -42,7 +88,10 @@ export const GlobalProvider = ({ children }) => {
         passengers: state.passengers,
         loading: state.loading,
         error: state.error,
-        getPassengers
+        JWT: state.JWT,
+        getToken,
+        getPassengers,
+        addPassenger
       }}
     >
       {children}

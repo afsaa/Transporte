@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../Navbar";
+import { Link } from "react-router-dom";
 
 import "../styles/home.css";
 
@@ -16,7 +17,9 @@ export default function Home() {
       </div>
       <div className="take-action-container">
         <h2 className="take-action-heading">Join our fleet now!</h2>
-        <button className="take-action-btn">Join me in!</button>
+        <Link to="/addPassenger">
+          <button className="take-action-btn">Join me in!</button>
+        </Link>
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ import { GlobalContext } from "../context/GlobalState";
 import Navbar from "./Navbar";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
-import axios from "axios";
 import "./styles/cardList.css";
 
 function useSearchPassengers(passengers) {
@@ -27,39 +26,25 @@ function useSearchPassengers(passengers) {
 }
 
 function PassengerList() {
-  const [storedJWT, setStoredJWT] = useState(null);
-  const { loading, error, passengers, getPassengers } = useContext(
-    GlobalContext
-  );
+  const {
+    JWT,
+    loading,
+    error,
+    passengers,
+    getToken,
+    getPassengers
+  } = useContext(GlobalContext);
   const { query, setQuery, filteredPassengers } = useSearchPassengers(
     passengers
   );
 
-  async function getToken(username, password) {
-    try {
-      const res = await axios.post("http://localhost:8080/authentication", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
-      setStoredJWT(res.data.token);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    if (!storedJWT) {
+    if (!JWT) {
       getToken("Kobe", "admin123");
     } else {
-      getPassengers(storedJWT);
+      getPassengers(JWT);
     }
-  }, [storedJWT]);
+  }, [JWT]);
 
   if (loading) {
     return <PageLoading />;
