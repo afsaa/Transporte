@@ -1,30 +1,16 @@
-import React, { useState, useContext, useMemo, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useContext,
+  useMemo,
+  useEffect
+} from "react";
 import { GlobalContext } from "../context/GlobalState";
 import Navbar from "./Navbar";
 import PassengerListItem from "./PassengerListItem";
 import PageLoading from "./PageLoading";
 import axios from "axios";
 import "./styles/cardList.css";
-
-class PassengerList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      error: null,
-      passengers: undefined
-    };
-  }
-
-  componentDidMount() {
-    // this.fetchData();
-    // this.getToken();
-  }
-
-  render() {
-    return <PassengersList passengers={this.state.passengers} />;
-  }
-}
 
 function useSearchPassengers(passengers) {
   const [query, setQuery] = useState("");
@@ -40,44 +26,41 @@ function useSearchPassengers(passengers) {
   return { query, setQuery, filteredPassengers };
 }
 
-async function getToken(username, password) {
-  try {
-    const res = await axios.post("http://localhost:8080/authentication", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username,
-        password
-      })
-    });
-    localStorage.setItem("JWT", res.data.token);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function PassengersList(props) {
+function PassengerList() {
+  const [storedJWT, setStoredJWT] = useState(null);
   const { loading, error, passengers, getPassengers } = useContext(
     GlobalContext
   );
-
-  useEffect(() => {
-    const storedJWT = localStorage.getItem("JWT");
-    if (storedJWT) {
-      getPassengers(storedJWT);
-    } else {
-      getToken("Kobe", "admin123");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //const passengers = props.passengers;
-  // console.log(passengers);
   const { query, setQuery, filteredPassengers } = useSearchPassengers(
     passengers
   );
-  // console.log(context);
+
+  async function getToken(username, password) {
+    try {
+      const res = await axios.post("http://localhost:8080/authentication", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      setStoredJWT(res.data.token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (!storedJWT) {
+      getToken("Kobe", "admin123");
+    } else {
+      getPassengers(storedJWT);
+    }
+  }, [storedJWT]);
+
   if (loading) {
     return <PageLoading />;
   }
@@ -85,7 +68,7 @@ function PassengersList(props) {
     return <h1>Shit happends!</h1>;
   }
   return (
-    <React.Fragment>
+    <Fragment>
       <Navbar />
       <div className="form-group">
         <label className="form-label">Check if you are in </label>
@@ -105,7 +88,7 @@ function PassengersList(props) {
           })}
         </ul>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }
 
