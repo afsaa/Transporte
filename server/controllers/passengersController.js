@@ -29,9 +29,8 @@ exports.getPassengers = (req, res, next) => {
 exports.addPassenger = (req, res, next) => {
   const { name, address, birthday } = req.body;
   db.any(
-    `INSERT INTO pasajero (nombre, direccion_residencia, fecha_nacimiento)
-	VALUES('${name}', '${address}', '${birthday}')`,
-    [true]
+    "INSERT INTO pasajero (nombre, direccion_residencia, fecha_nacimiento) VALUES($1, $2, $3)",
+    [name, address, birthday]
   )
     .then(() => {
       return res.status(201).json({ success: true, data: req.body });
@@ -46,7 +45,8 @@ exports.addPassenger = (req, res, next) => {
 // @route   DELETE /api/v1/pasajeros/:id
 // @access  Public
 exports.deletePassenger = (req, res, next) => {
-  db.any(`DELETE from pasajero WHERE id=${req.params.id}`, [true])
+  const { id } = req.params;
+  db.any(`DELETE from pasajero WHERE id=${id}`, [true])
     .then(() => {
       return res.status(200).json({
         success: true,
