@@ -4,6 +4,10 @@ body {
   padding: 30px 10% 0 10%;
 }
 
+.homepage-container {
+  padding-bottom: 2rem;
+}
+
 .hero {
   margin: 10px;
   padding: 5%;
