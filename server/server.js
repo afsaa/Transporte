@@ -7,6 +7,7 @@ const db = require("./config/db");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const apicache = require("apicache");
+const path = require("path");
 let cache = apicache.middleware;
 
 //app.use(cache("5 minutes"));
@@ -14,14 +15,18 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const port = process.env.PORT || 8080;
-// Starting the server
-app.listen(port, () => {
-  console.log("Listening on port 8080...");
-});
-
 // Passengers endpoints
 app.use("/api/v1/pasajeros", authenticateToken, passengersRoutes);
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, red) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 //Authenticate user
 app.post("/authentication", (req, res) => {
@@ -49,3 +54,9 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+const port = process.env.PORT || 8080;
+// Starting the server
+app.listen(port, () => {
+  console.log("Listening on port 8080...");
+});
