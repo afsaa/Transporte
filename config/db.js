@@ -8,8 +8,7 @@ const dbConfig = {
   password: "andressaa94"
 };
 
-const connectionString =
-  "postgres://ltcrdtrmtdblde:f2738663ff2857ed67750cd44d49ef60a3f9de1108fcb94b3e94f2a285aae58b@ec2-18-235-20-228.compute-1.amazonaws.com:5432/dcm8ern3k09onn";
+const connectionString = process.env.DATABASE_URL;
 const initOptions = {
   // global event notification;
   error(error, e) {
