@@ -20,7 +20,7 @@ export const GlobalProvider = ({ children }) => {
   // Actions
   async function getToken(username, password) {
     try {
-      const res = await axios.post("http://localhost:8080/authentication", {
+      const res = await axios.post("/authentication", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
