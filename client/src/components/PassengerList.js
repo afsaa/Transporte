@@ -56,11 +56,11 @@ function PassengerList() {
     <Fragment>
       <Navbar />
       <div className="form-group">
-        <label className="form-label">Check if you are in </label>
         <input
           type="text"
           className="form-control"
           value={query}
+          placeholder="Type your name here"
           onChange={e => {
             setQuery(e.target.value);
           }}
