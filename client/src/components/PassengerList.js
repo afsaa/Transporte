@@ -3,7 +3,7 @@ import React, {
   useState,
   useContext,
   useMemo,
-  useEffect
+  useEffect,
 } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import Navbar from "./Navbar";
@@ -16,7 +16,7 @@ function useSearchPassengers(passengers) {
   const [filteredPassengers, setFilteredPassengers] = useState(passengers);
 
   useMemo(() => {
-    const result = passengers.filter(passenger => {
+    const result = passengers.filter((passenger) => {
       return `${passenger.nombre}`.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredPassengers(result);
@@ -32,7 +32,7 @@ function PassengerList() {
     error,
     passengers,
     getToken,
-    getPassengers
+    getPassengers,
   } = useContext(GlobalContext);
   const { query, setQuery, filteredPassengers } = useSearchPassengers(
     passengers
@@ -44,6 +44,7 @@ function PassengerList() {
     } else {
       getPassengers(JWT);
     }
+    // eslint-disable-next-line
   }, [JWT]);
 
   if (loading) {
@@ -61,7 +62,7 @@ function PassengerList() {
           className="form-control"
           value={query}
           placeholder="Type your name here"
-          onChange={e => {
+          onChange={(e) => {
             setQuery(e.target.value);
           }}
         />
