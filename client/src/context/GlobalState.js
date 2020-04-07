@@ -7,7 +7,7 @@ const initialState = {
   passengers: [],
   loading: true,
   error: null,
-  JWT: null
+  JWT: null,
 };
 
 // Create context
@@ -16,29 +16,28 @@ export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
-
   // Actions
   async function getToken(username, password) {
     try {
       const res = await axios.post("/authentication", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username,
-          password
-        })
+          password,
+        }),
       });
       dispatch({
         type: "GET_TOKEN",
-        payload: res.data.token
+        payload: res.data.token,
       });
     } catch (error) {
       console.log(error.message);
       dispatch({
         type: "PASSENGER_ERROR",
-        payload: error.message
+        payload: error.message,
       });
     }
   }
@@ -47,17 +46,17 @@ export const GlobalProvider = ({ children }) => {
     try {
       const res = await axios.get("/api/v1/pasajeros", {
         headers: {
-          Authorization: `Bearer ${JWT}`
-        }
+          Authorization: `Bearer ${JWT}`,
+        },
       });
       dispatch({
         type: "GET_PASSENGERS",
-        payload: res.data.data
+        payload: res.data.data,
       });
     } catch (error) {
       dispatch({
         type: "PASSENGER_ERROR",
-        payload: error.message
+        payload: error.message,
       });
     }
   }
@@ -67,17 +66,17 @@ export const GlobalProvider = ({ children }) => {
       const res = await axios.post("/api/v1/pasajeros", newPassenger, {
         headers: {
           Authorization: `Bearer ${JWT}`,
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       dispatch({
         type: "ADD_PASSENGER",
-        payload: res.data.data.body
+        payload: res.data.data.body,
       });
     } catch (error) {
       dispatch({
         type: "PASSENGER_ERROR",
-        payload: error.message
+        payload: error.message,
       });
     }
   }
@@ -91,7 +90,7 @@ export const GlobalProvider = ({ children }) => {
         JWT: state.JWT,
         getToken,
         getPassengers,
-        addPassenger
+        addPassenger,
       }}
     >
       {children}

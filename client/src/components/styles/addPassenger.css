@@ -1,0 +1,22 @@
+.add-passenger-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  padding: 1rem;
+  border: 2px solid #000;
+  border-radius: 20px;
+  background-color: #eff5f7;
+}
+
+.add-passenger-title {
+  color: #89b140;
+  font-weight: bold;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
